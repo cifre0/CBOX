@@ -1,5 +1,14 @@
 #!/bin/bash
 
+### VARIABLE ###
+# Pour la fonction update_helm
+VERSION_HELM = $(helm version | cut -d '"' -f2 | cut -d "v" -f2)
+# Pour la fonction scale_down
+VERSION_CBOX = $(kubectl describe pod -n cryptobox | grep version | head -n 1 | cut -d"=" -f2)
+NAMESPACE = "cryptobox"
+# Pour la fonction upadate_CBOX
+VERSION_CBOX_SPECIFIQUE = ""
+
 ### FONCTION ###
 function gestion_erreur () {
     if [ "$?" -eq "0" ]; then printf "$1    \U2705\n\n"; else printf '\u2620 Failed \U2757\U2757\U2757\n'; exit 1; fi
@@ -41,15 +50,6 @@ function scale_up () {
     kubectl scale statefulset $NAMESPACE-redis-master $NAMESPACE-fluentd --replicas=0 -n $NAMESPACE
     gestion_erreur "scale-up réussi"
 }
-
-### VARIABLE ###
-# Pour la fonction update_helm
-VERSION_HELM = $(helm version | cut -d '"' -f2 | cut -d "v" -f2)
-# Pour la fonction scale_down
-VERSION_CBOX = $(kubectl describe pod -n cryptobox | grep version | head -n 1 | cut -d"=" -f2)
-NAMESPACE = "cryptobox"
-# Pour la fonction upadate_CBOX
-VERSION_CBOX_SPECIFIQUE = ""
 
 function main () {
     update_helm
