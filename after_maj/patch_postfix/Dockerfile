@@ -10,10 +10,10 @@ RUN mv ./kubectl /usr/local/bin/kubectl
 
 # copy .kube/config
 RUN mkdir.kube
-COPY .kube/config .kube/
+# COPY .kube/config .kube/
 
 # modify /etc/hosts
-RUN echo "172.26.30.160 rke.rpi.ercom.training" >> /etc/hosts
+# RUN echo "<IP> <FQDN>" >> /etc/hosts
 
 # test
-RUN kubectl -n cryptobox ge pod
+#RUN kubectl -n cryptobox ge pod
